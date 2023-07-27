@@ -2,18 +2,25 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/username/my-web-app/webapp/internal/handlers"
+	"github.com/k56-Live/my-web-app/webapp/internal/handlers"
 )
 
 func main() {
 	r := mux.NewRouter()
+	homeHandler := handlers.NewHomeHandler()
 
-	r.HandleFunc("/", handlers.HomeHandler)
-	r.HandleFunc("/dashboard", handlers.DashboardHandler)
+	r.HandleFunc("/", homeHandler.Index).Methods("GET")
+	r.HandleFunc("/dashboard", homeHandler.Dashboard).Methods("GET")
 
-	fmt.Println("Web application service is running on http://localhost:8080")
-	http.ListenAndServe(":8080", r)
+	server := &http.Server{
+		Addr:    ":8080",
+		Handler: r,
+	}
+
+	fmt.Println("Web application is running on http://localhost:8080")
+	log.Fatal(server.ListenAndServe())
 }
