@@ -1,8 +1,8 @@
-
 package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -11,9 +11,16 @@ import (
 
 func main() {
 	r := mux.NewRouter()
+	authHandler := handlers.NewAuthHandler()
 
-	r.HandleFunc("/login", handlers.AuthHandler)
+	r.HandleFunc("/login", authHandler.Login).Methods("POST")
+	r.HandleFunc("/logout", authHandler.Logout).Methods("POST")
+
+	server := &http.Server{
+		Addr:    ":8081",
+		Handler: r,
+	}
 
 	fmt.Println("Authentication service is running on http://localhost:8081")
-	http.ListenAndServe(":8081", r)
+	log.Fatal(server.ListenAndServe())
 }
