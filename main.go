@@ -5,16 +5,14 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/k56-Live/my-web-app/internal/handlers"
+	"github.com/username/my-web-app/authentication/internal/handlers"
 )
 
 func main() {
 	r := mux.NewRouter()
 
-	r.HandleFunc("/", handlers.HomeHandler)
-	r.HandleFunc("/login", handlers.LoginHandler)
-	r.HandleFunc("/dashboard", handlers.AuthMiddleware(handlers.DashboardHandler))
+	r.HandleFunc("/login", handlers.AuthHandler)
 
-	fmt.Println("Server is running on http://localhost:8080")
-	http.ListenAndServe(":8080", r)
+	fmt.Println("Authentication service is running on http://localhost:8081")
+	http.ListenAndServe(":8081", r)
 }
