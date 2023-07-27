@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/username/my-web-app/authentication/internal/models"
+	"github.com/k56-Live/my-web-app/authentication/internal/models"
 )
 
 type AuthHandler struct {
